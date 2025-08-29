@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Manipulation Practice</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+    h2 { margin-top: 0; }
+    .highlight { color: red; font-weight: bold; }
+    .dark { background: black; color: white; }
+    .submenu { display: none; }
+    .submenu.show { display: block; }
+
+    #txt{
+        font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>DOM Manipulation Practice Tasks</h1>
+
+<!-- 1 -->
+<section>
+  <h2>1. Change Paragraph Text</h2>
+  <p id="para">Hello World</p>
+  <button onclick="para.innerText='Text Changed!'">Change</button>
+</section>
+
+<!-- 2 -->
+<section>
+  <h2>2. Update Image src</h2>
+  <img id="myImg" src="img3.jfif" width="150">
+  <button onclick="myImg.src='img2.jfif'">Change Image</button>
+  <button onclick="myImg.src='img3.jfif'">Reset Image</button>
+</section>
+
+<!-- 3 -->
+<section>
+  <h2>3. Change Background Color</h2>
+  <div id="box" style="width:100px;height:100px;background:lightgray;"></div>
+  <button onclick="box.style.background='tomato'">Change Color</button>
+</section>
+
+<!-- 4 -->
+<section>
+  <h2>4. Toggle Visibility</h2>
+  <div id="myDiv" style="background:yellow;padding:10px;">I am visible</div>
+  <button onclick="myDiv.style.display = myDiv.style.display==='none'?'block':'none'">Toggle</button>
+</section>
+
+<!-- 5 -->
+<section>
+  <h2>5. Add List Item</h2>
+  <ul id="list"><li>Item 1</li></ul>
+  <button onclick="addItem()">Add Item</button>
+</section>
+
+<!-- 6 -->
+<section>
+  <h2>6. Delete Element</h2>
+  <p id="removeMe">Remove this text</p>
+<button onclick="document.getElementById('removeMe').remove()">Delete</button>
+</section>
+
+<!-- 7 -->
+<section>
+  <h2>7. Add CSS Class</h2>
+  <p id="p1">Hello</p>
+  <button onclick="p1.classList.add('highlight')">Highlight</button>
+</section>
+
+<!-- 8 -->
+<section>
+  <h2>8. Display Input Value</h2>
+  <input id="nameInput" placeholder="Enter name">
+  <button onclick="output.innerText=nameInput.value">Show</button>
+  <div id="output"></div>
+</section>
+
+<!-- 9 -->
+<section>
+  <h2>9. Font Size Control</h2>
+  <form>
+    <label for="font">Font Size :</label>
+    <input type="range" name="font" id="font" onchange="control()" min="15px" max="50px">
+  </form>
+  <p id="txt">Resize me</p>
+  
+</section>
+
+<!-- 10 -->
+<section>
+  <h2>10. Live Character Count</h2>
+  <textarea id="ta" oninput="count.innerText=ta.value.length"></textarea>
+  <p>Characters: <span id="count">0</span></p>
+</section>
+
+<!-- 11 -->
+<section>
+  <h2>11. To-Do List</h2>
+  <input id="task"><button onclick="addTask()">Add</button>
+  <ul id="todo"></ul>
+</section>
+
+<!-- 12 -->
+<section>
+  <h2>12. Accordion</h2>
+  <button onclick="toggleAcc()">Section 1</button>
+  <div id="acc" style="display:none;">Content inside accordion</div>
+</section>
+
+<!-- 13 -->
+<section>
+  <h2>13. Image Gallery</h2>
+  <img id="gallery" src="./img1.jfif" width="200">
+  <button onclick="prev()">Prev</button>
+  <button onclick="next()">Next</button>
+</section>
+
+<!-- 14 -->
+<section>
+  <h2>14. Dynamic Table</h2>
+  <table border="1" id="tbl"><tr><th>Name</th></tr></table>
+  <button onclick="addRow()">Add Row</button>
+</section>
+
+<!-- 15 -->
+<section>
+  <h2>15. Dark Mode</h2>
+  <button onclick="document.body.classList.toggle('dark')">Toggle Dark Mode</button>
+</section>
+
+<!-- 16 -->
+<section>
+  <h2>16. Filter List</h2>
+  <input onkeyup="filter(this.value)" placeholder="Search...">
+  <ul id="items"><li>Apple</li><li>Banana</li><li>Cherry</li></ul>
+</section>
+
+<!-- 17 -->
+<section>
+  <h2>17. Dropdown Menu</h2>
+  <button onclick="menu.classList.toggle('show')">Menu</button>
+  <ul id="menu" class="submenu">
+    <li>Option 1</li><li>Option 2</li>
+  </ul>
+</section>
+
+<!-- 18 -->
+<section>
+  <h2>18. Form Validation</h2>
+  <form onsubmit="return validate()">
+    <input id="f1" required placeholder="Name"><br>
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<!-- 19 -->
+<section>
+  <h2>19. Slideshow</h2>
+  <img id="slide" src="img2.jfif" width="250">
+</section>
+
+<!-- 20 -->
+<section>
+  <h2>20. Event Delegation</h2>
+  <ul id="list2">
+    <li>Item A</li><li>Item B</li><li>Item C</li>
+  </ul>
+</section>
+
+
+<script>
+/* Task 5: Add list item */
+function addItem(){
+  let li=document.createElement("li");
+  li.innerText="New Item";
+  list.appendChild(li);
+}
+
+/* Task 9: font size control */
+function control()
+{
+    let x=document.getElementById("font").value;    
+    document.getElementById("txt").style.fontSize=x+"px";
+}
+
+/* Task 11: To-do list */
+function addTask(){
+  let li=document.createElement("li");
+  li.innerHTML = task.value + 
+  " <button onclick='this.parentElement.remove()'>❌</button>"+
+  " <button onclick='this.parentElement.style.textDecoration=\"line-through\"'>✔</button>";
+  todo.appendChild(li);
+  task.value="";
+}
+
+/* Task 12: Accordion */
+function toggleAcc(){
+  acc.style.display= acc.style.display==="none"?"block":"none";
+}
+
+/* Task 13: Gallery */
+let imgs=["img1.jfif",
+          "img2.jfif",
+          "img3.jfif"], i=0;
+function next(){ i=(i+1)%imgs.length; gallery.src=imgs[i]; }
+function prev(){ i=(i-1+imgs.length)%imgs.length; gallery.src=imgs[i]; }
+
+/* Task 14: Table */
+function addRow(){
+  let row=tbl.insertRow();
+  let cell=row.insertCell();
+  cell.innerText="New Row";
+}
+
+/* Task 16: Filter */
+function filter(val){
+  let list = items.getElementsByTagName("li");
+for (let i = 0; i < list.length; i++) {
+   console.log(list[i].innerText);
+   list[i].style.display=list[i].innerText.toLowerCase().includes(val.toLowerCase())?"":"none";
+}
+}
+
+/* Task 18: Validation */
+function validate(){
+  if(f1.value===""){ f1.style.border="2px solid red"; return false;}
+  return true;
+}
+
+/* Task 19: Slideshow */
+let imgs2=["img1.jfif",
+          "img2.jfif",
+          "img3.jfif"], j=0;
+setInterval(()=>{ j=(j+1)%imgs2.length; slide.src=imgs2[j]; },2000);
+
+/* Task 20: Event delegation */
+list2.addEventListener("click", e=>{
+  if(e.target.tagName==="LI"){ alert("Clicked: "+e.target.innerText); }
+});
+
+
+
+</script>
+
+</body>
+</html>
