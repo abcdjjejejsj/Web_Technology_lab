@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT – Short Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fb;
+      color: #222;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 1.5rem 0;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 600;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      color: #1e3a8a;
+      border-left: 4px solid #1e3a8a;
+      padding-left: 10px;
+      margin-top: 1.5rem;
+    }
+
+    h3 {
+      color: #333;
+      margin-top: 1rem;
+    }
+
+    code {
+      background: #f1f3f6;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      color: #d6336c;
+    }
+
+    pre {
+      background: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      border: 1px solid #e0e0e0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: #e8eaf6;
+      color: #1e3a8a;
+    }
+
+    ul {
+      margin: 0.5rem 0 0.5rem 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+      header {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>JWT – Short Notes</header>
+
+  <div class="container">
+
+    <h2>1. What is JWT?</h2>
+    <p><strong>JWT (JSON Web Token)</strong> is an open standard (RFC 7519) used to securely transmit information between a client and a server as a JSON object. It is commonly used for authentication and authorization in modern web applications.</p>
+
+    <h2>2. Structure of a JWT</h2>
+    <p>A JWT consists of three parts separated by dots (<code>.</code>):</p>
+    <pre><code>Header.Payload.Signature</code></pre>
+    <p>Example:</p>
+    <pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJpZCI6IjEyMyIsIm5hbWUiOiJWYWliaGF2In0.
+hSDSDke4JSd-9Jsd0ad4J9da2xP3a</code></pre>
+
+    <h3>a) Header</h3>
+    <p>Contains metadata about the token such as type and algorithm used for signing.</p>
+    <pre><code>{
+  "alg": "HS256",
+  "typ": "JWT"
+}</code></pre>
+
+    <h3>b) Payload</h3>
+    <p>Contains claims or data. These can be predefined or custom claims.</p>
+    <pre><code>{
+  "userId": "123",
+  "role": "admin",
+  "exp": 1736543210
+}</code></pre>
+
+    <h3>c) Signature</h3>
+    <p>Created by encoding the header and payload using Base64, then signing with a secret key.</p>
+    <pre><code>HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  secret
+)</code></pre>
+
+    <h2>3. How JWT Works</h2>
+    <ol>
+      <li>User logs in with credentials.</li>
+      <li>Server verifies credentials and generates a JWT.</li>
+      <li>JWT is sent to the client and stored (usually in localStorage or cookies).</li>
+      <li>Client sends JWT with each request (in headers as <code>Authorization: Bearer &lt;token&gt;</code>).</li>
+      <li>Server verifies token before granting access to protected routes.</li>
+    </ol>
+
+    <h2>4. Advantages of JWT</h2>
+    <ul>
+      <li>Stateless – no need to store sessions on the server.</li>
+      <li>Compact – easily transmitted via URLs, headers, or cookies.</li>
+      <li>Secure – signature ensures data integrity.</li>
+      <li>Cross-platform – can be used across different languages and systems.</li>
+    </ul>
+
+    <h2>5. Common Use Cases</h2>
+    <ul>
+      <li>User authentication and authorization.</li>
+      <li>Secure API communication.</li>
+      <li>Single Sign-On (SSO).</li>
+    </ul>
+
+    <h2>6. Example in Node.js</h2>
+    <pre><code>const jwt = require('jsonwebtoken');
+
+const token = jwt.sign(
+  { email: 'user@example.com' },
+  'secret_key',
+  { expiresIn: '1h' }
+);
+
+const verified = jwt.verify(token, 'secret_key');
+console.log(verified);</code></pre>
+
+    <h2>7. Drawbacks of JWT</h2>
+    <ul>
+      <li>Cannot be revoked easily once issued.</li>
+      <li>Larger size compared to simple session IDs.</li>
+      <li>Must be securely stored to prevent token theft.</li>
+    </ul>
+
+    <h2>8. JWT vs Session</h2>
+    <table>
+      <tr>
+        <th>JWT</th>
+        <th>Session</th>
+      </tr>
+      <tr>
+        <td>Stateless (no server storage)</td>
+        <td>Stateful (stored on server)</td>
+      </tr>
+      <tr>
+        <td>Token stored in client</td>
+        <td>Session ID stored in cookie</td>
+      </tr>
+      <tr>
+        <td>Faster and scalable</td>
+        <td>May slow down with many users</td>
+      </tr>
+      <tr>
+        <td>Cannot be easily invalidated</td>
+        <td>Can be destroyed on logout</td>
+      </tr>
+    </table>
+
+  </div>
+
+  <footer>© 2025 JWT Notes | Designed by Vaibhav</footer>
+
+</body>
+</html>
